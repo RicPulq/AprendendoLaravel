@@ -10,11 +10,17 @@ class SeasonsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Series $series)
+    public function index(
+        Series $series,
+        // Request $request
+        )
     {
+        // dd($series->seasons);
+        // $seasons = $series->seasons()->with('episodes')->get();
         $seasons = $series->seasons;
 
-        return view('seasons.index')->with('seasons', $seasons);
+        // return view('seasons.index')->with(['series'=>$series,'seasons'=>$seasons]);
+        return view('seasons.index')->with('seasons',$seasons)->with('series',$series);
     }
 
     /**

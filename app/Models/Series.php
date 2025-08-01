@@ -13,7 +13,7 @@ class Series extends Model
 
     public function seasons()
     {
-        return $this->hasMany(Season::class, foreignKey:'series_id', localKey:'id');
+        return $this->hasMany(Season::class, 'series_id');
     }
 
     protected static function booted()
