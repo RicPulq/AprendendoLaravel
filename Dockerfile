@@ -26,6 +26,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Altere o proprietário dos arquivos para o usuário que o FPM executa (www-data),
 # isso ajuda a evitar problemas de permissão com logs e cache.
 RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html/storage
+RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
 
 # Exponha a porta 9000 para comunicação com o Nginx.
 EXPOSE 9000
