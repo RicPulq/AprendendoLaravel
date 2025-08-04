@@ -1,4 +1,9 @@
-<x-layout title="Episodes">
+<x-layout title="Episodes" :mensagem-sucesso="$mensagemSucesso">
+    @isset($mensagemSucesso)
+        <div class="alert alert-success">
+            {{$mensagemSucesso  }}
+        </div>
+    @endisset
     <form method="post">
         @csrf
         <ul class="list-group">

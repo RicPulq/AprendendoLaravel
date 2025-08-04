@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{$title}} - Controle de Séries</title>
 </head>
-<div class="container">
-    <body>
+<body>
+    <div class="container">
         <h1>{{$title }}</h1>
 
+        @isset($mensagemSucesso)
+            <div class="alert alert-success">
+                {{$mensagemSucesso  }}
+            </div>
+        @endisset
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -20,6 +25,6 @@
         @endif
 
         {{$slot}}
-    </body>
-</div>
+    </div>
+</body>
 </html>

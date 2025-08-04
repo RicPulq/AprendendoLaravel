@@ -1,4 +1,4 @@
-<x-layout title="Teste">
+<x-layout title="Teste Algo">
     <a href="{{route('series.create')}}" class="btn btn-dark">Adicionar Nova Série</a>
 
     @isset($mensagemSucesso)
