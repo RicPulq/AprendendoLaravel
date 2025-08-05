@@ -1,62 +1,40 @@
 services:
-  # Serviço da Aplicação PHP/Laravel
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laravel_app
-    restart: unless-stopped
+    image: aprendendo-laravel-app
+    container_name: aprendendo-laravel-app
+    # Sincroniza todo o seu código local com o /var/www/html do container
     volumes:
-      # A MÁGICA ACONTECE AQUI!
-      # Espelha o diretório atual do seu projeto local para o diretório /var/www/html do contêiner.
-      # Qualquer alteração no seu código local será refletida instantaneamente no contêiner.
       - ./:/var/www/html
-    networks:
-      - laravel-net
-
-  # Serviço do Servidor Web Nginx
-  nginx:
-    image: nginx:1.25-alpine
-    container_name: laravel_nginx
-    restart: unless-stopped
     ports:
-      # Mapeia a porta 8000 do seu computador para a porta 80 do contêiner.
-      # Acesse a aplicação em http://localhost:8000
-      - "8080:80"
-    volumes:
-      # Espelha o código para que o Nginx possa servir os arquivos públicos (CSS, JS, imagens).
-      - ./:/var/www/html
-      # Mapeia o arquivo de configuração do Nginx que criaremos.
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - "8000:8000"
     depends_on:
-      - app
+      - db
     networks:
-      - laravel-net
+      - app-laravel
+    # Carrega variáveis de ambiente do .env (copie .env.example para .env e ajuste se necessário)
+    env_file:
+      - .env
 
-  # Serviço do Banco de Dados PostgreSQL
   db:
-    image: postgres:15
-    container_name: laravel_db
-    restart: unless-stopped
+    image: postgres:14
+    container_name: aprendendo-laravel-db
     environment:
-      # Use as variáveis do seu arquivo .env para configurar o banco.
-      # Garanta que seu .env local tenha essas variáveis definidas.
       POSTGRES_DB: db-laravel
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    volumes:
-      # Cria um volume nomeado para persistir os dados do banco de dados.
-      - dbdata:/var/lib/postgresql/data
     networks:
-      - laravel-net
+      - app-laravel
 
-# Definição da rede e do volume
 networks:
-  laravel-net:
-    driver: bridge
+  app-laravel:
+
 
 volumes:
-  dbdata:
-    driver: local
+  pgdata:
