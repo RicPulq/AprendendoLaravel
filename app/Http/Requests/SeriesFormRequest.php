@@ -23,6 +23,7 @@ class SeriesFormRequest extends FormRequest
     {
         return [
             "name" => ['required', 'min:3'],
+            "cover_path" => ['required', 'file', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ];
     }
 
@@ -30,6 +31,10 @@ class SeriesFormRequest extends FormRequest
         return [
             'name.required' => 'O campo nome é obrigatório',
             'name.min' => "O campo nome precisa de pelo menos :min caracteres",
+            'cover_path.required' => 'O campo capa é obrigatório',
+            'cover_path.file' => 'O campo capa deve ser um arquivo',
+            'cover_path.mimes' => 'O campo capa deve ser um arquivo do tipo: :values',
+            'cover_path.max' => 'O campo capa não pode ser maior que :max kilobytes',
         ];
     }
 }

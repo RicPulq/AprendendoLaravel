@@ -1,5 +1,5 @@
 <x-layout title="Nova Série"> 
-    <form action="{{route('series.store')}}"  method="post">
+    <form action="{{route('series.store')}}"  method="post" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <div class="col-2">
@@ -27,6 +27,13 @@
                     class="form-control"
                     value="{{old('episodesPerSeason')}}">
             </div>
+            <div class="mb-3">
+                <label for="cover" class="form-label">Imagem:</label>
+                <input type="file"
+                    id="cover_path"
+                    name="cover_path"
+                    class="form-control"
+                    accept="image/git, image/png, image/jpeg">
         </div>
         <button type="submit" class="btn btn-primary">Adicionar</button>
     </form>

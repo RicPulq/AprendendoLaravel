@@ -46,8 +46,10 @@ class SeriesController extends Controller
      */
     public function store(SeriesFormRequest $request)
     {
+        $coverPath = $request->file('cover_path')->store('series_cover', 'public');
+        //$request->cover_path = $coverPath;
+        $request->merge(['cover_path' => $request->file('cover_path')->store('series_cover', 'public')]);
         $serie = $this->repository->add($request);
-        
         EventsSeriesCreated::dispatch(
             $serie->name,
             $serie->id,
