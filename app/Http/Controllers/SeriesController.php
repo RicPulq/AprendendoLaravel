@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CoverDeleted;
 use App\Events\SeriesCreated as EventsSeriesCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\Autenticador;
@@ -12,6 +13,7 @@ use App\Models\User;
 use App\Repository\SeriesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class SeriesController extends Controller
 {
@@ -46,9 +48,9 @@ class SeriesController extends Controller
      */
     public function store(SeriesFormRequest $request)
     {
-        $coverPath = $request->file('cover_path')->store('series_cover', 'public');
-        //$request->cover_path = $coverPath;
-        $request->merge(['cover_path' => $request->file('cover_path')->store('series_cover', 'public')]);
+        $data = $request->validated();
+        $coverPath = $request->file('cover')->store('series_cover', 'public');
+        $request->merge(['cover' => $coverPath]);
         $serie = $this->repository->add($request);
         EventsSeriesCreated::dispatch(
             $serie->name,
@@ -93,16 +95,19 @@ class SeriesController extends Controller
      */
     public function destroy(Series $series)
     {
-        // dd($series);
-        // dd($request->series);
-        // Serie::destroy($request->series); // DELETE FROM series WHERE id = $request->series;
-        // OU
+        // Verifica se a série tem uma capa e dispara o evento CoverDeleted
+        // Isso garante que o evento só seja disparado se a série realmente tiver uma capa
+        //dd($series->cover);
+        if ($series && $series->cover) {
+            Storage::disk('public')->exists($series->cover);
+            //CoverDeleted::dispatch($series->cover);
+            Storage::delete($series->cover);
+            //dd(Storage::disk('public')->delete($series->cover));
+        }
+        
+        //$this->repository->delete($id);
         $series->delete(); // SELECT * FROM series WHERE id = $series->id AND DELETE FROM series WHERE id = $series->id;
 
-        // $request->session()->put('mensagem.sucesso','Série removida com sucesso.');
-        // OU
-        // $request->session()->flash('mensagem.sucesso',"Série '{$series->name}' removida com sucesso.");
-        // return to_route('series.index');
         return to_route('series.index')->with('mensagem.sucesso',"Série '{$series->name}' removida com sucesso.");
     }
 }

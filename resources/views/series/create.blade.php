@@ -30,8 +30,8 @@
             <div class="mb-3">
                 <label for="cover" class="form-label">Imagem:</label>
                 <input type="file"
-                    id="cover_path"
-                    name="cover_path"
+                    id="cover"
+                    name="cover"
                     class="form-control"
                     accept="image/git, image/png, image/jpeg">
         </div>

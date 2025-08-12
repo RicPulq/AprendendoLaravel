@@ -9,6 +9,7 @@ use App\Http\Controllers\SeasonsController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Middleware\Autenticador;
 use App\Mail\SeriesCreated;
+use App\Models\Series;
 use Illuminate\Http\Request;
 
 
@@ -46,3 +47,7 @@ Route::get('/email', function (Request $request) {
         'TEste', 1,5, 5
     );
 })->name('email.test');
+
+/* Route::get('/api/series', function () {
+    return Series::all();
+}); */

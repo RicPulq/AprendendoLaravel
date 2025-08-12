@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: aprendendo-laravel-db
+    environment:
+      POSTGRES_DB: db-laravel
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
